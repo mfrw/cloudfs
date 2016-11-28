@@ -2,11 +2,13 @@ import hashlib, os, random, struct
 from Crypto.Cipher import AES
 
 def generate_key(passwd):
-  return hashlib.sha256(passwd).digest()
+    key = hashlib.sha256(passwd).digest().encode('hex')[:32]
+    return key
 
 def enc_file(key, in_filename, out_filename=None, chunksize=64*1024):
   """ Encrypts a file using AES (CBC mode) with the given key.
   """
+  print("The len of key is %s"%len(key))
   if not out_filename:
     out_filename = in_filename + '.enc'
 

@@ -14,6 +14,7 @@ class CloudFS:
         not path is supplied, use the current directory for the path
         '''
         self.key = generate_key(pwd)
+        print("The key is %s and len is %s"%(self.key, len(self.key)))
         if root :
             self.cwd = root
         else :
@@ -52,7 +53,7 @@ class CloudFS:
         '''
         Add a new file to the inode
         '''
-        slef.inode["files"].append({"filename":fname, "filename_enc":efname})
+        self.inode["files"].append({"filename":fname, "filename_enc":efname})
 
     def encrypt(self, path=None):
         ''' 
@@ -131,7 +132,7 @@ def enc_and_del(path, key, output=None):
     '''
     Encrypt all files and delete the plain text files
     '''
-    enc_file(path, key, output)
+    enc_file(key, path, output)
     os.remove(path)
 
 def get_random32(path=''):
@@ -149,14 +150,15 @@ def get_random32(path=''):
 if __name__ == '__main__':
     print ("About to encrypt the folder test")
     a = input('hello')
-    encfs = CloudFS('hello', './test/')
+    os.chdir('./test')
+    encfs = CloudFS('hello0000')
 
     encfs.encrypt()
     print ("Encrypted the files")
     a = input('hello')
     encfs.decrypt()
-    pirnt("Decrypted the files")
-    pirnt("change some of  the files")
+    print("Decrypted the files")
+    print("change some of  the files")
     a = input('hello')
     encfs.encrypt()
     a = input('hello')
