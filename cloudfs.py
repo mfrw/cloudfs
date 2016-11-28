@@ -149,19 +149,19 @@ def get_random32(path=''):
 
 if __name__ == '__main__':
     print ("About to encrypt the folder test")
-    a = input('hello')
-    os.chdir('./test')
-    encfs = CloudFS('hello0000')
+    a = raw_input('hello')
+    #os.chdir('./test')
+    encfs = CloudFS('hello','./test')
 
     encfs.encrypt()
     print ("Encrypted the files")
-    a = input('hello')
+    a = raw_input('hello')
     encfs.decrypt()
     print("Decrypted the files")
     print("change some of  the files")
-    a = input('hello')
+    a = raw_input('hello')
     encfs.encrypt()
-    a = input('hello')
+    a = raw_input('hello')
 
 
 
