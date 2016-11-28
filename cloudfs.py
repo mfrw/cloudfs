@@ -89,6 +89,9 @@ class CloudFS:
             dec_file(self.key, os.path.join(path, f["filename_enc"]), os.path.join(path, f["filename"]))
             if del_enc:
                 os.remove(os.path.join(path, f["filename_enc"]))
+        os.remove(os.path.join(path, 'inode.dat.enc'))
+
+
 
     def inode_clean(self, path=None, inode=None):
         '''
