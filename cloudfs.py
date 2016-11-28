@@ -1,7 +1,7 @@
 
 import os
 import json
-from encryption_helper import dec_file, enc_file, generate_key
+from enc_helper import dec_file, enc_file, generate_key
 
 ignored_files = [
         ]
