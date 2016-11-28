@@ -14,7 +14,6 @@ class CloudFS:
         not path is supplied, use the current directory for the path
         '''
         self.key = generate_key(pwd)
-        print("The key is %s and len is %s"%(self.key, len(self.key)))
         if root :
             self.cwd = root
         else :
