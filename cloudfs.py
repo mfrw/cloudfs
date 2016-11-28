@@ -90,6 +90,7 @@ class CloudFS:
             if del_enc:
                 os.remove(os.path.join(path, f["filename_enc"]))
         os.remove(os.path.join(path, 'inode.dat.enc'))
+        inode["files"] = []
 
 
 
