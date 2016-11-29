@@ -5,6 +5,9 @@ import json
 from enc_helper import dec_file, enc_file, generate_key
 
 ignored_files = [
+        '.client_secret.json',
+        '.storage.json',
+        'inode.dat.enc.zip',
         ]
 
 
