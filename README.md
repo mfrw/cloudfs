@@ -3,5 +3,8 @@ A per file encrypting FS, intended to keep files safe on the cloud. The cloud pr
 
 
 #Usage
+```bash
 python cfshell.py
+```
+
 Use the help command to work you way thorough
