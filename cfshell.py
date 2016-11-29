@@ -96,10 +96,12 @@ class CmdShell(cmd.Cmd):
         if not os.path.exists(arg[0]):
             print "File does not exits"
             return
-        upload = cloud_upload.DriveUpload()
+        fnames = []
         for i in os.listdir(arg[0]):
             if not i.startswith('.'):
-                upload.upload_file(arg)
+                fnames.append(i)
+        upload = cloud_upload.DriveUpload()
+        upload.upload_file(fnames)
         del upload
 
     def do_uploadzdir(self, line):
