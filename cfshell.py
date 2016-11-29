@@ -2,6 +2,10 @@
 
 import cmd, os
 import cloudfs 
+import cloud_upload
+import sys
+import zipfile
+import base64
 
 class CmdShell(cmd.Cmd):
     prompt = 'cloudfs> '
@@ -58,7 +62,9 @@ class CmdShell(cmd.Cmd):
        print output
 
     def do_cd(self, line):
-        "Change directory"
+        '''
+        Change directory
+        '''
         arg = [ a for a in line.split(' ') if len(a) > 0]
         if len(arg) > 1:
             print "Error: Check input"
@@ -67,25 +73,78 @@ class CmdShell(cmd.Cmd):
             print "%s : Not Found"%arg[0]
             return
         os.chdir(arg[0])
+
+    def do_uploadfile(self, line):
+        '''
+        uploadfile filename
+        Uploads a single file to the cloud (GDrive) 
+        '''
+        arg = [a for a in line.split(' ') if len(a) > 0]
+        if not os.path.exists(arg[0]):
+            print "File does not exits"
+            return
+        upload = cloud_upload.DriveUpload()
+        upload.upload_file(arg)
+        del upload
     
+    def do_uploadall(self, line):
+        '''
+        uploadfile path
+        Uploads all  file to the cloud (GDrive) 
+        '''
+        arg = [a for a in line.split(' ') if len(a) > 0]
+        if not os.path.exists(arg[0]):
+            print "File does not exits"
+            return
+        upload = cloud_upload.DriveUpload()
+        for i in os.listdir(arg[0]):
+            if not i.startswith('.'):
+                upload.upload_file(arg)
+        del upload
+
+    def do_uploadzdir(self, line):
+        '''
+        uploadzdir [$dir] 
+        upload a dir and all the contents there in a tar.gz
+        '''
+        err_msg = 'Bad Arguments'
+        arg = [ a for a in line.split(' ') if len(a) > 0]
+        if len(arg) == 0:
+            path = os.getcwd()
+        elif len(arg) == 1:
+            path = arg[0]
+        if len(arg) > 1:
+            print err_msg
+            return
+        if not os.path.exists(os.path.join(os.getcwd(), path)) and os.path.isdir(os.path.join(os.getcwd(), path)):
+            print "Directory Not found"
+            return
+        zipf = zipfile.ZipFile('inode.dat.enc.zip', 'w', zipfile.ZIP_DEFLATED)
+        zipdir(path, zipf)
+        zipf.close()
+        upload = cloud_upload.DriveUpload()
+        upload.upload_file('inode.dat.enc.zip')
+        del upload
+        os.remove('inode.dat.enc.zip')
+
     def do_EOF(self, line):
         print ""
         return True
 
     def do_exit(self, line):
         "Exit from the shell"
-        os.exit(0)
+        sys.exit(0)
 
+
+def zipdir(path, ziph):
+    '''
+    ziph is zipfile handle
+    '''
+    for root, dirs, files in os.walk(path):
+        for f in files:
+            ziph.write(os.path.join(root, f))
 
 
 if __name__ == '__main__':
     c = CmdShell()
     c.cmdloop()
-
-        
-
-
-
-
-
-
