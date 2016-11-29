@@ -125,7 +125,7 @@ class CmdShell(cmd.Cmd):
         zipdir(path, zipf)
         zipf.close()
         upload = cloud_upload.DriveUpload()
-        upload.upload_file('inode.dat.enc.zip')
+        upload.upload_file(['inode.dat.enc.zip']) #finally i found you ****-head ... kept me up whole night
         del upload
         os.remove('inode.dat.enc.zip')
 
