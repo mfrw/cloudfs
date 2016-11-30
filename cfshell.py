@@ -6,6 +6,7 @@ import cloud_upload
 import sys
 import zipfile
 import base64
+import urllib2
 
 class CmdShell(cmd.Cmd):
     prompt = 'cloudfs> '
@@ -128,6 +129,36 @@ class CmdShell(cmd.Cmd):
         upload.upload_file(['inode.dat.enc.zip']) #finally i found you ****-head ... kept me up whole night
         del upload
         os.remove('inode.dat.enc.zip')
+
+    def do_download(self, line):
+        ''' download $link
+        Downloads a link from the internet, or whatever (GDrive)
+        '''
+        url = line
+        fname = raw_input("Enter the file name:").rsplit()[0]
+        u = urllib2.urlopen(url)
+        data = u.read()
+        f = open(fname, 'w')
+        f.write(data)
+        f.close()
+
+#        f = open(fname, 'wb')
+#        meta = u.info()
+#        file_size = int(meta.getheaders("Content-Length")[0])
+#        print "Downloading: %s Bytes: %s"%(fname, file_size)
+#        file_size_dl = 0
+#        block_sz = 8192
+#        while True:
+#            buff = u.read(block_sz)
+#            if not buff:
+#                break
+#            file_size_dl += len(buff)
+#            f.write(buff)
+#            status = r"%10d [%3.2f%%]" %(file_size_dl, file_size_dl*100./ file_size)
+#            status = status + chr(8)*(len(status)+1)
+#            print status,
+#        f.close()
+
 
     def do_EOF(self, line):
         print ""
